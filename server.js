@@ -5,6 +5,7 @@ const path = require("path");
 // Create express app instance.
 const app = express();
 
+const exphbs = require("express-handlebars");
 // Set the port of our application
 // process.env.PORT lets the port be set by Heroku
 const PORT = process.env.PORT || 8020;
@@ -13,8 +14,10 @@ const PORT = process.env.PORT || 8020;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-require("./app/routing/htmlRoutes")(app, path);
-require("./app/routing/apiRoutes")(app, path);
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
+require("./controllers/burgers_controller.js")(app);
 
 // app.use(routes)
 
